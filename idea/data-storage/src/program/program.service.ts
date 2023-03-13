@@ -5,13 +5,12 @@ import {
   GetAllProgramsResult,
   GetMetaParams,
   IProgram,
+  ProgramStatus,
 } from '@gear-js/common';
 
 import { MetadataNotFound, ProgramNotFound } from '../common/errors';
 import { Meta, Program } from '../database/entities';
-import { AddProgramMetaInput } from './types';
 import { ProgramRepo } from './program.repo';
-import { ProgramStatus } from '../common/enums';
 
 @Injectable()
 export class ProgramService {
@@ -24,18 +23,6 @@ export class ProgramService {
       programs,
       count: total,
     };
-  }
-
-  public async addProgramsMetaByCode(
-    codeId: string,
-    genesis: string,
-    addProgramMetaInput: AddProgramMetaInput,
-  ): Promise<Program[]> {
-    const programs = await this.programRepository.listByCodeIdAndGenesis(codeId, genesis);
-    const { name, meta } = addProgramMetaInput;
-    const updatePrograms = programs.map((program) => ({ ...program, meta, name }));
-
-    return this.programRepository.save(updatePrograms);
   }
 
   public async getProgramMeta(params: GetMetaParams): Promise<Meta> {

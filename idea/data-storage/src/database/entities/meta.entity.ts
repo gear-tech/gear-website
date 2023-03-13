@@ -9,14 +9,14 @@ export class Meta implements IMeta {
   @PrimaryGeneratedColumn('rowid')
   public id: number;
 
-  @Column()
+  @Column({ unique: true })
   public hash: string;
 
   @Column({ nullable: true })
   public hex: string;
 
   @Column({ nullable: true, type: 'json' })
-  public types: string;
+  public types: any;
 
   @OneToMany(() => Code, (code) => code.meta)
   public codes: Code[];
