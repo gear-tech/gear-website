@@ -96,7 +96,7 @@ jobs:
       - name: Build and push Indexer Docker image
         uses: docker/build-push-action@master
         with:
-          file: idea/data-storage/Dockerfile
+          file: idea/indexer/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-indexer:prod
 
