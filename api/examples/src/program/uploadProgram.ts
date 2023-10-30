@@ -1,4 +1,4 @@
-import { GearApi, GearKeyring, decodeAddress, getProgramMetadata } from '@gear-js/api';
+import { GearApi, GearKeyring, ProgramMetadata, decodeAddress } from '@gear-js/api';
 import { readFileSync } from 'fs';
 
 import { PATH_TO_META, PATH_TO_OPT } from '../config';
@@ -10,9 +10,9 @@ const main = async () => {
   const alice = await GearKeyring.fromSuri('//Alice');
 
   const code = readFileSync(PATH_TO_OPT);
-  const metaFile = readFileSync(PATH_TO_META);
+  const metaTxt = readFileSync(PATH_TO_META, 'utf-8');
 
-  const meta = getProgramMetadata(`0x${metaFile}`);
+  const meta = ProgramMetadata.from(metaTxt);
 
   const initPayload = [1, 2, 3];
 

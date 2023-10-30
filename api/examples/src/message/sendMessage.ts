@@ -1,4 +1,4 @@
-import { GearApi, GearKeyring, MessageQueued, decodeAddress, getProgramMetadata } from '@gear-js/api';
+import { GearApi, GearKeyring, MessageQueued, ProgramMetadata, decodeAddress } from '@gear-js/api';
 import { HexString } from '@polkadot/util/types';
 import { readFileSync } from 'fs';
 
@@ -14,7 +14,7 @@ const main = async () => {
 
   const metaFile = readFileSync(PATH_TO_META);
 
-  const meta = getProgramMetadata(`0x${metaFile}`);
+  const meta = ProgramMetadata.from(`0x${metaFile}`);
 
   const payload = {
     One: 'String',
@@ -29,7 +29,7 @@ const main = async () => {
     meta,
   );
 
-  const tx = api.message.send({ destination: programId, payload, gasLimit: gas.min_limit, value: 20000 }, meta);
+  const tx = await api.message.send({ destination: programId, payload, gasLimit: gas.min_limit, value: 20000 }, meta);
 
   const reply = waitForReply(api, programId);
   let messageId: HexString;

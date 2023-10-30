@@ -1,11 +1,10 @@
 import { GearApi, MessageQueued, ProgramChanged, UserMessageSent } from '@gear-js/api';
 import { HexString } from '@polkadot/util/types';
-import { UnsubscribePromise } from '@polkadot/api/types';
 
-export function waitForInit(api: GearApi, programId: string): Promise<UnsubscribePromise> {
+export function waitForInit(api: GearApi, programId: string): Promise<number> {
   let messageId: HexString;
   return new Promise((resolve, reject) => {
-    const unsub = api.query.system.events((events) => {
+    api.query.system.events((events) => {
       events.forEach(({ event }) => {
         switch (event.method) {
           case 'MessageEnqueued':
@@ -23,9 +22,8 @@ export function waitForInit(api: GearApi, programId: string): Promise<Unsubscrib
             if (
               source.eq(programId) &&
               details.isSome &&
-              details.unwrap().isReply &&
-              details.unwrap().asReply.replyTo.eq(messageId) &&
-              details.unwrap().asReply.statusCode.eq(1)
+              !details.unwrap().code.isSuccess &&
+              details.unwrap().to.eq(messageId)
             ) {
               reject(payload.toHuman());
             }
@@ -33,7 +31,7 @@ export function waitForInit(api: GearApi, programId: string): Promise<Unsubscrib
           case 'ProgramChanged':
             const pcEvent = event as ProgramChanged;
             if (pcEvent.data.id.eq(programId) && pcEvent.data.change.isActive) {
-              resolve(unsub);
+              resolve(0);
             }
             break;
         }
