@@ -1,31 +1,32 @@
 import { HexString } from '@polkadot/util/types';
 import { readFileSync } from 'fs';
 
-import { GearApi, getProgramMetadata, getStateMetadata } from '@gear-js/api';
+import { GearApi, ProgramMetadata, getStateMetadata } from '@gear-js/api';
 import { PATH_TO_META, PATH_TO_STATE_WASM } from '../config';
 
 const [programId] = process.argv.slice(2) as [HexString];
 const metaFile = readFileSync(PATH_TO_META, 'utf-8');
+const meta = ProgramMetadata.from(metaFile);
 
 const readFullState = async (api: GearApi) => {
-  const meta = getProgramMetadata(`0x${metaFile}`);
-
-  const state = await api.programState.read({ programId }, meta, meta.types.state);
+  const state = await api.programState.read({ programId, payload: '0x' }, meta);
 
   console.log(JSON.stringify(state.toHuman(), undefined, 2));
 };
 
 const readStateUsingWasm = async (api: GearApi) => {
   const stateWasm = readFileSync(PATH_TO_STATE_WASM);
-  const meta = await getStateMetadata(stateWasm);
+
+  const stateMeta = await getStateMetadata(stateWasm);
 
   console.log(
     'Available functions:',
-    Object.keys(meta.functions).map((fn) => meta.getTypeDef(meta.functions[fn].input)),
+    Object.keys(stateMeta.functions).map((fn) => meta.getTypeDef(stateMeta.functions[fn].input)),
   );
 
   const state = await api.programState.readUsingWasm(
     { programId, fn_name: 'wallet_by_id', wasm: stateWasm, argument: { decimal: 1, hex: '0x01' } },
+    stateMeta,
     meta,
   );
 
