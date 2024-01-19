@@ -19,7 +19,6 @@ env:
 
 jobs:
   tag-prod-version:
-    needs: [wait-previous-run]
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, 'idea-release')
     environment: production
