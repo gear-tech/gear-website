@@ -60,7 +60,7 @@ jobs:
         with:
           file: idea/frontend/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:prod
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:production
           build-args: |
             VITE_NODE_ADDRESS=${{ secrets.REACT_APP_NODE_ADDRESS }}
             VITE_API_URL=${{ secrets.REACT_APP_API_URL }}
