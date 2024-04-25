@@ -1,12 +1,7 @@
-import {
-  IssueVoucher,
-  ProgramVoucherSelect,
-  CodeVoucherSelect,
-  VoucherTable,
-  VoucherBadge,
-  UseVoucherCheckboxDeprecated,
-  VoucherTableDeprecated,
-} from './ui';
+import { IssueVoucher, ProgramVoucherSelect, CodeVoucherSelect, VoucherTable, VoucherBadge, VoucherCard } from './ui';
+import VoucherCardPlaceholder from './assets/voucher-card-placeholder.svg?react';
+import { useVouchers, useVoucherFilters } from './hooks';
+import { Voucher } from './types';
 
 export {
   IssueVoucher,
@@ -14,6 +9,10 @@ export {
   CodeVoucherSelect,
   VoucherTable,
   VoucherBadge,
-  UseVoucherCheckboxDeprecated,
-  VoucherTableDeprecated,
+  VoucherCard,
+  VoucherCardPlaceholder,
+  useVouchers,
+  useVoucherFilters,
 };
+
+export type { Voucher };
