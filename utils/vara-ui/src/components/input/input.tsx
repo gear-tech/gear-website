@@ -11,9 +11,12 @@ import {
 import cx from 'clsx';
 import styles from './input.module.scss';
 
+export const inputSizes = ['default', 'small'] as const;
+export type IInputSizes = (typeof inputSizes)[number];
+
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'size'> & {
   icon?: FunctionComponent<SVGProps<SVGSVGElement> & { title?: string | undefined }>;
-  size?: 'default' | 'small';
+  size?: IInputSizes;
   label?: string;
   error?: ReactNode;
   block?: boolean;
