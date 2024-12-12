@@ -44,7 +44,6 @@ ENV VITE_NODE_ADDRESS=${VITE_NODE_ADDRESS} \
     
 
 RUN yarn build:frontend
-
 FROM nginx:alpine
 
 ARG VITE_NODE_ADDRESS \
